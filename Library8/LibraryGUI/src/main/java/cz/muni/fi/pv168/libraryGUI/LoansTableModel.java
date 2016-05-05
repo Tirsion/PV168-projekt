@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package cz.muni.fi.pv168.libraryGUI;
 
 import cz.muni.fi.pv168.libraryloans.*;
@@ -18,6 +13,10 @@ public class LoansTableModel extends AbstractTableModel {
 
     private List<Loan> loans = new ArrayList<>();
 
+    public LoansTableModel(LoanManagerImpl manager) {
+        this.loans = manager.findAllLoans();
+    }
+    
     @Override
     public int getRowCount() {
         return loans.size();
@@ -59,11 +58,11 @@ public class LoansTableModel extends AbstractTableModel {
             case 2:
                 return "Book Id";
             case 3:
-                return "E-mail";
+                return "Start date";
             case 4:
-                return "Note";
+                return "Expected end";
             case 5:
-                return "Note";
+                return "Real end";
             default:
                 throw new IllegalArgumentException("columnIndex");
         }

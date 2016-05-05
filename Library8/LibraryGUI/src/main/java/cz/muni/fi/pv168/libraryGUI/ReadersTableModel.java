@@ -17,6 +17,10 @@ import javax.swing.table.AbstractTableModel;
 public class ReadersTableModel extends AbstractTableModel {
 
     private List<Reader> readers = new ArrayList<>();
+    
+    public ReadersTableModel(ReaderManagerImpl manager) {
+        this.readers = manager.findAllReaders();
+    }
 
     @Override
     public int getRowCount() {

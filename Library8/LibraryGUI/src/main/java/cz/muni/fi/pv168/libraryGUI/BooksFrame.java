@@ -1,12 +1,13 @@
 package cz.muni.fi.pv168.libraryGUI;
 
-import cz.muni.fi.pv168.libraryloans.BookManager;
+import cz.muni.fi.pv168.libraryloans.Book;
 import cz.muni.fi.pv168.libraryloans.BookManagerImpl;
 import cz.muni.fi.pv168.libraryloans.Main;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.sql.DataSource;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -16,12 +17,14 @@ public class BooksFrame extends javax.swing.JFrame {
 
     private BookManagerImpl manager;
     private final static Logger log = Logger.getLogger(BooksFrame.class.getName());
-    
+
+    private Book selectedBook;
+
     /**
      * Creates new form BooksFrame
      */
     public BooksFrame() {
-        
+
         //sets manager and reads data from database
         try {
             DataSource dataSource = Main.createDatabase();
@@ -31,8 +34,8 @@ public class BooksFrame extends javax.swing.JFrame {
             java.util.logging.Logger.getLogger(BooksFrame.class.getName()).log(Level.SEVERE, "Cannot initialize database", ex);
         }
         log.info("manager was created and stored into BooksFrame attribute");
-        
-        initComponents();        
+
+        initComponents();
     }
 
     public BookManagerImpl getManager() {
@@ -50,25 +53,54 @@ public class BooksFrame extends javax.swing.JFrame {
 
         jScrollPane1 = new javax.swing.JScrollPane();
         jTableBooks = new javax.swing.JTable();
+        jButtonSelectBook = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         jTableBooks.setModel(new BooksTableModel(manager));
+        jTableBooks.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         jScrollPane1.setViewportView(jTableBooks);
+
+        jButtonSelectBook.setText("Choose selected book");
+        jButtonSelectBook.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonSelectBookActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 669, Short.MAX_VALUE)
+            .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 678, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(261, 261, 261)
+                .addComponent(jButtonSelectBook)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 469, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 444, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jButtonSelectBook)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void jButtonSelectBookActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonSelectBookActionPerformed
+        if (jTableBooks.getSelectedRow() >= 0) {
+            Long selectedId = (Long) jTableBooks.getValueAt(jTableBooks.getSelectedRow(), 0);
+//          Jak nastavit text do MainFrame.jTextAreaSelectedBook?
+            selectedBook = manager.getBookById(selectedId);
+            log.info("Borrow: Selected book: " + selectedBook);
+        }
+        else {
+            JOptionPane.showMessageDialog(null, "No book was selected!");
+        }
+    }//GEN-LAST:event_jButtonSelectBookActionPerformed
 
     /**
      * @param args the command line arguments
@@ -106,6 +138,7 @@ public class BooksFrame extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton jButtonSelectBook;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTableBooks;
     // End of variables declaration//GEN-END:variables

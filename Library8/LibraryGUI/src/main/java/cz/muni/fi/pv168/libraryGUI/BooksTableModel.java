@@ -24,8 +24,6 @@ public class BooksTableModel extends AbstractTableModel {
 
 //    public BooksTableModel() {
 //    }
-    
-
     @Override
     public int getRowCount() {
         return books.size();
@@ -68,6 +66,21 @@ public class BooksTableModel extends AbstractTableModel {
                 return "Published";
             case 4:
                 return "Note";
+            default:
+                throw new IllegalArgumentException("columnIndex");
+        }
+    }
+
+    @Override
+    public Class<?> getColumnClass(int columnIndex) {
+        switch (columnIndex) {
+            case 0:
+                return Long.class;
+            case 1:
+            case 2:
+            case 3:
+            case 4:
+                return String.class;
             default:
                 throw new IllegalArgumentException("columnIndex");
         }
