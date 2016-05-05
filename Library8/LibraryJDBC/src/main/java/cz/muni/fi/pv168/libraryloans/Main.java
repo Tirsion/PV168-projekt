@@ -2,7 +2,6 @@ package cz.muni.fi.pv168.libraryloans;
 
 import java.sql.SQLException;
 import static java.time.Clock.systemDefaultZone;
-import java.time.LocalDateTime;
 import java.util.logging.Logger;
 
 import javax.sql.DataSource;
