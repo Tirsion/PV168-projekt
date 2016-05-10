@@ -18,7 +18,7 @@
     <modules>
         <module>../LibraryJDBC</module>
         <module>../LibraryWeb</module>
-        <module>../../LibraryGUI</module>
+        <module>../LibraryGUI</module>
     </modules>
     
     <properties>
